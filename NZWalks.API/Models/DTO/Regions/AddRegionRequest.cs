@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace NZWalks.API.Models.DTO.Region
+namespace NZWalks.API.Models.DTO.Regions
 {
     public class AddRegionRequest
     {
