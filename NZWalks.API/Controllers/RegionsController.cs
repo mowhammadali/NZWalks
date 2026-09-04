@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Mapping;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Regions;
@@ -11,10 +12,12 @@ namespace NZWalks.API.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _regionRepository;
+        private readonly IMapper _mapper;
 
-        public RegionsController(IRegionRepository regionRepository)
+        public RegionsController(IRegionRepository regionRepository , IMapper mapper)
         {
             _regionRepository = regionRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +26,7 @@ namespace NZWalks.API.Controllers
         {
             IEnumerable<Region> regions = await _regionRepository.GetAll();
 
-            RegionsResponse response = regions.MapToResponse();
+            RegionsResponse response = _mapper.Map<RegionsResponse>(regions);
 
             return Ok(response);
         }
@@ -40,7 +43,7 @@ namespace NZWalks.API.Controllers
                 return NotFound();
             }
 
-            RegionResponseDto response = region.MapToResponse();
+            RegionResponseDto response = _mapper.Map<RegionResponseDto>(region);
 
             return Ok(response);
         }
@@ -49,11 +52,11 @@ namespace NZWalks.API.Controllers
         [ProducesResponseType(typeof(RegionResponseDto), StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] AddRegionRequest addRegionRequest)
         {
-            Region mappedToRegion = addRegionRequest.MapToRegion();
+            Region mappedToRegion = _mapper.Map<Region>(addRegionRequest);
 
             Region region = await _regionRepository.Create(mappedToRegion);
 
-            RegionResponseDto response = region.MapToResponse();
+            RegionResponseDto response = _mapper.Map<RegionResponseDto>(region);
 
             return CreatedAtAction(nameof(GetById), new { id = region.Id }, response);
         }
@@ -63,7 +66,7 @@ namespace NZWalks.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update([FromBody] UpdateRegionRequest updateRegionRequest, [FromRoute] Guid id)
         {
-            Region mappedToRegion = updateRegionRequest.MapToRegion(id);
+            Region mappedToRegion = _mapper.Map<Region>(updateRegionRequest);
 
             Region region = await _regionRepository.Update(mappedToRegion, id);
 
@@ -72,7 +75,7 @@ namespace NZWalks.API.Controllers
                 return NotFound();
             }
 
-            RegionResponseDto response = region.MapToResponse();
+            RegionResponseDto response = _mapper.Map<RegionResponseDto>(region);
 
             return Ok(response);
         }

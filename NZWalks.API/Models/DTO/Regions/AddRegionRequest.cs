@@ -8,7 +8,7 @@ namespace NZWalks.API.Models.DTO.Regions
         [Display(Name = "Region Name")]
         [StringLength(40, ErrorMessage = "The {0} must be less than {1} characters")]
         [Required(ErrorMessage = "An {0} is required")]
-        public string Name { get; set; }
+        public string RegionName { get; set; }
         [Display(Name = "Region Code")]
         [StringLength(10, ErrorMessage = "The {0} must be less than {1} characters")]
         [Required(ErrorMessage = "An {0} is required")]

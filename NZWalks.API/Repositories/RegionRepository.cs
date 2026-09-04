@@ -16,7 +16,7 @@ namespace NZWalks.API.Repositories
 
         public async Task<IEnumerable<Region>> GetAll()
         {
-            IEnumerable<Region> regions = _dbContext.Regions.ToList();
+            IEnumerable<Region> regions = await _dbContext.Regions.ToListAsync();
             
             return regions;
         }

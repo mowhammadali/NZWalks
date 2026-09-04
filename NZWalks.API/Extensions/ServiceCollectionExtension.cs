@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
+using NZWalks.API.Mapping;
 using NZWalks.API.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,13 @@ public static class ServiceCollectionExtension
         {
             options.UseSqlServer(configuration.GetConnectionString("NZWalksConnectionString"));
         });
+        
+        return services;
+    }
+
+    public static IServiceCollection AddAutoMapperService(this IServiceCollection services)
+    {
+        services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfiles>());
         
         return services;
     }

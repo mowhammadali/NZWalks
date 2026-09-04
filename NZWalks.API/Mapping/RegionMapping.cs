@@ -10,7 +10,7 @@ public static class RegionMapping
         return new Region()
         {
             Id = Guid.NewGuid(),
-            Name = addRegionRequest.Name,
+            Name = addRegionRequest.RegionName,
             Code = addRegionRequest.Code,
             RegionImageUrl = addRegionRequest.RegionImageUrl,
         };
@@ -21,7 +21,7 @@ public static class RegionMapping
         return new Region()
         {
             Id = id,
-            Name = updateRegionRequest.Name,
+            Name = updateRegionRequest.RegionName,
             Code = updateRegionRequest.Code,
             RegionImageUrl = updateRegionRequest.RegionImageUrl,
         };
@@ -32,7 +32,7 @@ public static class RegionMapping
         return new RegionResponseDto()
         {
             Id = region.Id,
-            Name = region.Name,
+            RegionName = region.Name,
             Code = region.Code,
             RegionImageUrl = region.RegionImageUrl,
         };
