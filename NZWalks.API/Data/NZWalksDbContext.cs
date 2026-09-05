@@ -18,6 +18,7 @@ public class NZWalksDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.ApplyConfiguration(new WalkMapping());
         modelBuilder.ApplyConfiguration(new RegionMapping());
         modelBuilder.ApplyConfiguration(new DifficultyMapping());
     }
