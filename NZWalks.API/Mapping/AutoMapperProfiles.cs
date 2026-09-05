@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Models.DTO.Difficulties;
 using NZWalks.API.Models.DTO.Regions;
 using NZWalks.API.Models.DTO.Walks;
 
@@ -53,5 +54,13 @@ public class AutoMapperProfiles : Profile
                 dest => dest.TotalCount,
                 opt => opt.MapFrom(src => src.Count())
             );
+
+
+        // Difficulty Mapper
+        CreateMap<Difficulty, DifficultyResponseDto>()
+            .ForMember(
+                dest => dest.DifficultyName,
+                opt => opt.MapFrom(src => src.Name)
+            ).ReverseMap();
     }
 }

@@ -15,14 +15,15 @@ public class WalkRepository : IWalkRepository
 
     public async Task<IEnumerable<Walk>> GetAllAsync()
     {
-        List<Walk> walks = await _dbContext.Walks.ToListAsync();
+        List<Walk> walks = await _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).ToListAsync();
 
         return walks;
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)
     {
-        var Walk = await _dbContext.Walks.FirstOrDefaultAsync(walk => walk.Id == id);
+        var Walk = await _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty)
+            .FirstOrDefaultAsync(walk => walk.Id == id);
 
         return Walk;
     }
