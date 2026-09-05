@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Regions;
+using NZWalks.API.Models.DTO.Walks;
 
 namespace NZWalks.API.Mapping;
 
@@ -12,7 +13,7 @@ public class AutoMapperProfiles : Profile
         CreateMap<Region, RegionResponseDto>().ForMember(
             dest => dest.RegionName,
             opt => opt.MapFrom(src => src.Name)
-            ).ReverseMap();
+        ).ReverseMap();
 
         CreateMap<IEnumerable<Region>, RegionsResponse>()
             .ForMember(
@@ -23,11 +24,25 @@ public class AutoMapperProfiles : Profile
         CreateMap<Region, AddRegionRequest>().ForMember(
             dest => dest.RegionName,
             opt => opt.MapFrom(src => src.Name)
-            ).ReverseMap();
-        
+        ).ReverseMap();
+
         CreateMap<Region, UpdateRegionRequest>().ForMember(
             dest => dest.RegionName,
             opt => opt.MapFrom(src => src.Name)
         ).ReverseMap();
+
+
+        // Walk Mapper
+        CreateMap<Walk, WalkResponseDto>()
+            .ForMember(
+                dest => dest.WalkName,
+                opt => opt.MapFrom(src => src.Name)
+            ).ReverseMap();
+
+        CreateMap<Walk, AddWalkRequestDto>()
+            .ForMember(
+                dest => dest.WalkName,
+                opt => opt.MapFrom(src => src.Name)
+            ).ReverseMap();
     }
 }

@@ -13,6 +13,7 @@ public static class ServiceCollectionExtension
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddScoped<IRegionRepository , RegionRepository>();
+        services.AddScoped<IWalkRepository, WalkRepository>();
 
         return services;
     }
