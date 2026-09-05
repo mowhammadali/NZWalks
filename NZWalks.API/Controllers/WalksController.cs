@@ -19,15 +19,42 @@ public class WalksController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET
+    [HttpGet]
+    [ProducesResponseType(typeof(WalksResponseDto) , StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
+    {
+        var walks = await _repository.GetAllAsync();
+        var response = _mapper.Map<WalksResponseDto>(walks);
+        
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(WalkResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var  walk = await _repository.GetByIdAsync(id);
+
+        if (walk == null)
+        {
+            return NotFound();
+        }
+        
+        var response = _mapper.Map<WalkResponseDto>(walk);
+        
+        return Ok(response);
+    }
+    
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] AddWalkRequestDto walkRequest)
+    [ProducesResponseType(typeof(WalkResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Create([FromBody] AddWalkRequestDto walkRequest)
     {
         var request = _mapper.Map<Walk>(walkRequest);
         var walk = await _repository.CreateAsync(request);
-
         var response = _mapper.Map<WalkResponseDto>(walk);
 
-        return Ok(response);
+        return CreatedAtAction(nameof(GetById), new { id = walk.Id }, response);
     }
 }

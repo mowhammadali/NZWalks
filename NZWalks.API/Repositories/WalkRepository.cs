@@ -1,6 +1,6 @@
-﻿using NZWalks.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
-using NZWalks.API.Models.DTO.Walks;
 
 namespace NZWalks.API.Repositories;
 
@@ -11,6 +11,20 @@ public class WalkRepository : IWalkRepository
     public WalkRepository(NZWalksDbContext dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public async Task<IEnumerable<Walk>> GetAllAsync()
+    {
+        List<Walk> walks = await _dbContext.Walks.ToListAsync();
+
+        return walks;
+    }
+
+    public async Task<Walk?> GetByIdAsync(Guid id)
+    {
+        var Walk = await _dbContext.Walks.FirstOrDefaultAsync(walk => walk.Id == id);
+
+        return Walk;
     }
 
     public async Task<Walk> CreateAsync(Walk walk)
