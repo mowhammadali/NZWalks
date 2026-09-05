@@ -22,9 +22,9 @@ public class WalksController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(WalksResponseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? Search)
     {
-        var walks = await _repository.GetAllAsync();
+        var walks = await _repository.GetAllAsync(Search);
         var response = _mapper.Map<WalksResponseDto>(walks);
 
         return Ok(response);

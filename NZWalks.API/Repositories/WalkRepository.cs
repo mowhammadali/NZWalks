@@ -13,11 +13,17 @@ public class WalkRepository : IWalkRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Walk>> GetAllAsync()
+    public async Task<IEnumerable<Walk>> GetAllAsync(string? search = null)
     {
-        List<Walk> walks = await _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).ToListAsync();
+        // List<Walk> walks = await _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).ToListAsync();
+        var walks = _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).AsQueryable();
 
-        return walks;
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            walks = walks.Where(w => w.Name.Contains(search));
+        }
+
+        return walks.ToList();
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)
