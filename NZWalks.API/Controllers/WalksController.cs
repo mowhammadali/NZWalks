@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
+using NZWalks.API.Enums;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Walks;
 using NZWalks.API.Repositories;
@@ -22,9 +23,10 @@ public class WalksController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(WalksResponseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] string? Search, [FromQuery] Guid? DifficultyId)
+    public async Task<IActionResult> GetAll([FromQuery] string? Search, [FromQuery] Guid? DifficultyId,
+        [FromQuery] WalkSortBy? SortBy, [FromQuery] bool? IsAscending)
     {
-        var walks = await _repository.GetAllAsync(Search, DifficultyId);
+        var walks = await _repository.GetAllAsync(Search, DifficultyId, SortBy, IsAscending ?? true);
         var response = _mapper.Map<WalksResponseDto>(walks);
 
         return Ok(response);

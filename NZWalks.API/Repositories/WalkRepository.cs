@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
+using NZWalks.API.Enums;
 using NZWalks.API.Models.Domain;
 
 namespace NZWalks.API.Repositories;
@@ -13,11 +14,13 @@ public class WalkRepository : IWalkRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Walk>> GetAllAsync(string? search = null, Guid? difficultyId = null)
+    public async Task<IEnumerable<Walk>> GetAllAsync(string? search = null, Guid? difficultyId = null,
+        WalkSortBy? sortBy = null, bool isAscending = true)
     {
         // List<Walk> walks = await _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).ToListAsync();
         var walks = _dbContext.Walks.Include(w => w.Region).Include(w => w.Difficulty).AsQueryable();
 
+        // Filtering
         if (!string.IsNullOrWhiteSpace(search))
         {
             walks = walks.Where(w => w.Name.Contains(search));
@@ -26,6 +29,17 @@ public class WalkRepository : IWalkRepository
         if (difficultyId != null)
         {
             walks = walks.Where(w => w.DifficultyId == difficultyId);
+        }
+
+        // Sorting
+        if (sortBy == WalkSortBy.Name)
+        {
+            walks = isAscending ? walks.OrderBy(w => w.Name) : walks.OrderByDescending(w => w.Name);
+        }
+
+        if (sortBy == WalkSortBy.Length)
+        {
+            walks = isAscending ? walks.OrderBy(w => w.LengthInKm) : walks.OrderByDescending(w => w.LengthInKm);
         }
 
         return walks.ToList();
