@@ -5,7 +5,7 @@ namespace NZWalks.API.Repositories;
 
 public interface IWalkRepository
 {
-    Task<IEnumerable<Walk>> GetAllAsync(string? search);
+    Task<IEnumerable<Walk>> GetAllAsync(string? search, Guid? difficultyId);
     Task<Walk?> GetByIdAsync(Guid id);
     Task<Walk> CreateAsync(Walk request);
     Task<Walk?> UpdateAsync(Walk request, Guid id);
