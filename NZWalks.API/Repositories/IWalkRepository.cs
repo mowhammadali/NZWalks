@@ -9,4 +9,5 @@ public interface IWalkRepository
     Task<Walk?> GetByIdAsync(Guid id);
     Task<Walk> CreateAsync(Walk request);
     Task<Walk?> UpdateAsync(Walk request, Guid id);
+    Task<bool> DeleteAsync(Guid id);
 }

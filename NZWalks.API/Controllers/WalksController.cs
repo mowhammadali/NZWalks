@@ -67,6 +67,8 @@ public class WalksController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(WalkSummaryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromBody] UpdateWalkRequestDto walkRequest, [FromRoute] Guid id)
     {
         var request = _mapper.Map<Walk>(walkRequest);
@@ -78,5 +80,15 @@ public class WalksController : ControllerBase
         var response = _mapper.Map<WalkSummaryDto>(walk);
 
         return Ok(response);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var isWalkDeleted = await _repository.DeleteAsync(id);
+
+        return isWalkDeleted ? NoContent() : NotFound();
     }
 }
