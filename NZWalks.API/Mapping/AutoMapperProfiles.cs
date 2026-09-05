@@ -12,6 +12,12 @@ public class AutoMapperProfiles : Profile
     {
         // Region Mapper
         CreateMap<Region, RegionResponseDto>().ForMember(
+                dest => dest.RegionName,
+                opt => opt.MapFrom(src => src.Name)
+            )
+            .ReverseMap();
+
+        CreateMap<Region, RegionSummaryDto>().ForMember(
             dest => dest.RegionName,
             opt => opt.MapFrom(src => src.Name)
         ).ReverseMap();
@@ -35,6 +41,12 @@ public class AutoMapperProfiles : Profile
 
         // Walk Mapper
         CreateMap<Walk, WalkResponseDto>()
+            .ForMember(
+                dest => dest.WalkName,
+                opt => opt.MapFrom(src => src.Name)
+            ).ReverseMap();
+
+        CreateMap<Walk, WalkSummaryDto>()
             .ForMember(
                 dest => dest.WalkName,
                 opt => opt.MapFrom(src => src.Name)

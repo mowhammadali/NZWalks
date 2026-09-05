@@ -16,14 +16,14 @@ namespace NZWalks.API.Repositories
 
         public async Task<IEnumerable<Region>> GetAll()
         {
-            IEnumerable<Region> regions = await _dbContext.Regions.ToListAsync();
-            
+            IEnumerable<Region> regions = await _dbContext.Regions.Include(r => r.Walks).ToListAsync();
+
             return regions;
         }
 
         public async Task<Region?> GetById(Guid id)
         {
-            Region region = await _dbContext.Regions.FirstOrDefaultAsync(r => r.Id == id);
+            Region region = await _dbContext.Regions.Include(r => r.Walks).FirstOrDefaultAsync(r => r.Id == id);
 
             if (region == null)
             {
@@ -37,7 +37,7 @@ namespace NZWalks.API.Repositories
         {
             await _dbContext.Regions.AddAsync(regionRequest);
             await _dbContext.SaveChangesAsync();
-            
+
             return regionRequest;
         }
 
@@ -49,13 +49,13 @@ namespace NZWalks.API.Repositories
             {
                 return null;
             }
-            
+
             region.Name = regionRequest.Name;
             region.Code = regionRequest.Code;
             region.RegionImageUrl = regionRequest.RegionImageUrl;
 
             await _dbContext.SaveChangesAsync();
-            
+
             return region;
         }
 
@@ -67,7 +67,7 @@ namespace NZWalks.API.Repositories
             {
                 return false;
             }
-            
+
             _dbContext.Regions.Remove(region);
             await _dbContext.SaveChangesAsync();
 
