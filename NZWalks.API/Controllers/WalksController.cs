@@ -65,4 +65,18 @@ public class WalksController : ControllerBase
             response
         );
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update([FromBody] UpdateWalkRequestDto walkRequest, [FromRoute] Guid id)
+    {
+        var request = _mapper.Map<Walk>(walkRequest);
+
+        var walk = await _repository.UpdateAsync(request, id);
+
+        if (walk is null) return NotFound();
+
+        var response = _mapper.Map<WalkSummaryDto>(walk);
+
+        return Ok(response);
+    }
 }

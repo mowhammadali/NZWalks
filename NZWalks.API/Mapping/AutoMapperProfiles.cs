@@ -58,6 +58,12 @@ public class AutoMapperProfiles : Profile
                 opt => opt.MapFrom(src => src.Name)
             ).ReverseMap();
 
+        CreateMap<Walk, UpdateWalkRequestDto>()
+            .ForMember(
+                dest => dest.WalkName,
+                opt => opt.MapFrom(src => src.Name)
+            ).ReverseMap();
+
         CreateMap<IEnumerable<Walk>, WalksResponseDto>()
             .ForMember(
                 dest => dest.Items,

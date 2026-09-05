@@ -28,11 +28,28 @@ public class WalkRepository : IWalkRepository
         return Walk;
     }
 
-    public async Task<Walk> CreateAsync(Walk walk)
+    public async Task<Walk> CreateAsync(Walk walkRequest)
     {
-        await _dbContext.Walks.AddAsync(walk);
+        await _dbContext.Walks.AddAsync(walkRequest);
         await _dbContext.SaveChangesAsync();
 
+        return walkRequest;
+    }
+
+    public async Task<Walk?> UpdateAsync(Walk walkRequest, Guid id)
+    {
+        var walk = await _dbContext.Walks.FirstOrDefaultAsync(w => w.Id == id);
+
+        if (walk is null) return null;
+
+        walk.Name = walkRequest.Name;
+        walk.Description = walkRequest.Description;
+        walk.LengthInKm = walkRequest.LengthInKm;
+        walk.WalkImageUrl = walkRequest.WalkImageUrl;
+        walk.DifficultyId = walkRequest.DifficultyId;
+        walk.RegionId = walkRequest.RegionId;
+
+        await _dbContext.SaveChangesAsync();
         return walk;
     }
 }

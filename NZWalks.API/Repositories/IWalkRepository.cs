@@ -8,4 +8,5 @@ public interface IWalkRepository
     Task<IEnumerable<Walk>> GetAllAsync();
     Task<Walk?> GetByIdAsync(Guid id);
     Task<Walk> CreateAsync(Walk request);
+    Task<Walk?> UpdateAsync(Walk request, Guid id);
 }
