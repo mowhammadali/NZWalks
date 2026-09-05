@@ -51,6 +51,11 @@ public class WalksController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] AddWalkRequestDto walkRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var request = _mapper.Map<Walk>(walkRequest);
 
         var walk = await _repository.CreateAsync(request);
@@ -71,6 +76,11 @@ public class WalksController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromBody] UpdateWalkRequestDto walkRequest, [FromRoute] Guid id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var request = _mapper.Map<Walk>(walkRequest);
 
         var walk = await _repository.UpdateAsync(request, id);
