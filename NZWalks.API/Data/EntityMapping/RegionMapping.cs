@@ -12,7 +12,7 @@ public class RegionMapping : IEntityTypeConfiguration<Region>
         builder.Property(p => p.Id).ValueGeneratedOnAdd();
         builder.Property(p => p.Name).HasMaxLength(32).IsRequired();
         builder.Property(p => p.Code).HasMaxLength(8).IsRequired();
-        builder.Property<DateTime>("DateCreated").HasColumnName("CreatedAt").HasDefaultValue("getdate()");
+        builder.Property<DateTime>("CreatedDate").HasColumnName("CreatedAt").HasDefaultValueSql("(getdate())");
 
         List<Region> regions = new List<Region>()
         {

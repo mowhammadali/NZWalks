@@ -10,7 +10,7 @@ public class DifficultyMapping : IEntityTypeConfiguration<Difficulty>
     {
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Name).HasMaxLength(50).IsRequired();
-        builder.Property<DateTime>("DateCreated").HasColumnName("CreatedAt").HasDefaultValue("getdate()");
+        builder.Property<DateTime>("CreatedDate").HasColumnName("CreatedAt").HasDefaultValueSql("(getdate())");
 
         List<Difficulty> difficulties = new List<Difficulty>()
         {
