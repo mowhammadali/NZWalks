@@ -1,11 +1,14 @@
-﻿using NZWalks.API.Enums;
+﻿using NZWalks.API.Commons.Pagination;
+using NZWalks.API.Enums;
 using NZWalks.API.Models.Domain;
 
 namespace NZWalks.API.Repositories;
 
 public interface IWalkRepository
 {
-    Task<IEnumerable<Walk>> GetAllAsync(string? search, Guid? difficultyId, WalkSortBy? sortBy, bool isAscending , int pageNumber, int pageSize);
+    Task<PagedResult<Walk>> GetAllAsync(string? search, Guid? difficultyId, WalkSortBy? sortBy, bool isAscending,
+        int pageNumber, int pageSize);
+
     Task<Walk?> GetByIdAsync(Guid id);
     Task<Walk> CreateAsync(Walk request);
     Task<Walk?> UpdateAsync(Walk request, Guid id);

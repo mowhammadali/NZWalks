@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NZWalks.API.Commons.Pagination;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Difficulties;
 using NZWalks.API.Models.DTO.Regions;
@@ -72,6 +73,8 @@ public class AutoMapperProfiles : Profile
                 dest => dest.TotalCount,
                 opt => opt.MapFrom(src => src.Count())
             );
+
+        CreateMap<PagedResult<Walk>, WalksResponseDto>();
 
 
         // Difficulty Mapper

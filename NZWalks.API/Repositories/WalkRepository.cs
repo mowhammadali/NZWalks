@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NZWalks.API.Commons.Pagination;
 using NZWalks.API.Data;
 using NZWalks.API.Enums;
 using NZWalks.API.Models.Domain;
@@ -14,7 +15,7 @@ public class WalkRepository : IWalkRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Walk>> GetAllAsync(string? search = null,
+    public async Task<PagedResult<Walk>> GetAllAsync(string? search = null,
         Guid? difficultyId = null,
         WalkSortBy? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 10)
     {
@@ -43,10 +44,18 @@ public class WalkRepository : IWalkRepository
             walks = isAscending ? walks.OrderBy(w => w.LengthInKm) : walks.OrderByDescending(w => w.LengthInKm);
         }
 
-        var skip = (pageNumber - 1) * pageSize;
-        walks = walks.Skip(skip).Take(pageSize);
+        var totalCount = await walks.CountAsync();
 
-        return walks.ToList();
+        var skip = (pageNumber - 1) * pageSize;
+        var items = await walks.Skip(skip).Take(pageSize).ToListAsync();
+
+        return new PagedResult<Walk>()
+        {
+            Items = items,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)

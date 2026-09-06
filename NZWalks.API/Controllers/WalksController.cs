@@ -27,9 +27,9 @@ public class WalksController : ControllerBase
         [FromQuery] WalkSortBy? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
     {
-        var walks = await _repository.GetAllAsync(search, difficultyId, sortBy, isAscending ?? true, pageNumber,
+        var pagedResult = await _repository.GetAllAsync(search, difficultyId, sortBy, isAscending ?? true, pageNumber,
             pageSize);
-        var response = _mapper.Map<WalksResponseDto>(walks);
+        var response = _mapper.Map<WalksResponseDto>(pagedResult);
 
         return Ok(response);
     }
