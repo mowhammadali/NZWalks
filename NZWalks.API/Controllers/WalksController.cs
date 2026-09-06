@@ -23,10 +23,12 @@ public class WalksController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(WalksResponseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] string? Search, [FromQuery] Guid? DifficultyId,
-        [FromQuery] WalkSortBy? SortBy, [FromQuery] bool? IsAscending)
+    public async Task<IActionResult> GetAll([FromQuery] string? search, [FromQuery] Guid? difficultyId,
+        [FromQuery] WalkSortBy? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
-        var walks = await _repository.GetAllAsync(Search, DifficultyId, SortBy, IsAscending ?? true);
+        var walks = await _repository.GetAllAsync(search, difficultyId, sortBy, isAscending ?? true, pageNumber,
+            pageSize);
         var response = _mapper.Map<WalksResponseDto>(walks);
 
         return Ok(response);
