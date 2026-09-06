@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddDbContextServices(builder.Configuration);
 builder.Services.AddAutoMapperService();
+builder.Services.AddAuthenticationService(builder.Configuration);
 
 var app = builder.Build();
 
@@ -17,6 +18,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
