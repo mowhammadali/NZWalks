@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Models.Domain;
@@ -21,6 +22,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Reader,Writer")]
         [ProducesResponseType(typeof(RegionsResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
@@ -32,6 +34,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Reader,Writer")]
         [ProducesResponseType(typeof(RegionResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
@@ -49,6 +52,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         [ProducesResponseType(typeof(RegionResponseDto), StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] AddRegionRequest addRegionRequest)
@@ -63,6 +67,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         [ProducesResponseType(typeof(RegionResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,6 +88,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
