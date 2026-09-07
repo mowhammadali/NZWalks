@@ -42,4 +42,22 @@ public class AuthController : ControllerBase
 
         return BadRequest("Something went wrong!");
     }
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
+    {
+        var user = await _userManager.FindByEmailAsync(loginRequest.Email);
+
+        if (user != null)
+        {
+            bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+
+            if (isPasswordCorrect)
+            {
+                return Ok("You have successfully logged in!");
+            }
+        }
+
+        return BadRequest("Email or password is incorrect!");
+    }
 }
