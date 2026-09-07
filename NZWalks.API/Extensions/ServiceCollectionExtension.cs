@@ -25,6 +25,8 @@ public static class ServiceCollectionExtension
         services.AddEndpointsApiExplorer();
         services.AddScoped<IRegionRepository, RegionRepository>();
         services.AddScoped<IWalkRepository, WalkRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddHttpContextAccessor();
         services.AddScoped<ITokenRepository, TokenRepository>();
 
         return services;
