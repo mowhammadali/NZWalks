@@ -6,6 +6,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddDbContextServices(builder.Configuration);
 builder.Services.AddAutoMapperService();
 builder.Services.AddAuthenticationService(builder.Configuration);
+builder.Services.AddIdentityService();
 
 var app = builder.Build();
 

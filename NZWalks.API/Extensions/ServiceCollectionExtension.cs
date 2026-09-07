@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NZWalks.API.Data;
@@ -36,6 +37,11 @@ public static class ServiceCollectionExtension
             options.UseSqlServer(configuration.GetConnectionString("NZWalksConnectionString"));
         });
 
+        services.AddDbContext<NZWalksAuthDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("NZWalksAuthConnectionString"));
+        });
+
         return services;
     }
 
@@ -65,6 +71,27 @@ public static class ServiceCollectionExtension
                         Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!)),
                 };
             });
+
+        return services;
+    }
+
+    public static IServiceCollection AddIdentityService(this IServiceCollection services)
+    {
+        services.AddIdentityCore<IdentityUser>()
+            .AddRoles<IdentityRole>()
+            .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NZWalks")
+            .AddEntityFrameworkStores<NZWalksAuthDbContext>()
+            .AddDefaultTokenProviders();
+
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequiredUniqueChars = 1;
+        });
 
         return services;
     }
