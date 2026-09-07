@@ -25,6 +25,7 @@ public static class ServiceCollectionExtension
         services.AddSwaggerGen();
         services.AddScoped<IRegionRepository, RegionRepository>();
         services.AddScoped<IWalkRepository, WalkRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
 
         return services;
     }
